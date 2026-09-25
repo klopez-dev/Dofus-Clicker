@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dofus Clicker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Nunito:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/game.css" />
+    <link rel="icon" href="assets/placeholders/kamas.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <div id="app">
+      <section id="character-setup" class="character-setup" aria-labelledby="character-title">
+        <div class="character-sheet">
+          <p class="eyebrow">Bienvenue sur Dofus Clicker</p>
+          <h2 id="character-title">Choisis ton personnage</h2>
+          <p class="hint">Parcours les classes avec les flèches, puis choisis ton apparence.</p>
+          <div class="sex-choice">
+            <span class="choice-label">Sexe</span>
+            <button class="sex-btn active" type="button" data-sex="M">Masculin</button>
+            <button class="sex-btn" type="button" data-sex="F">Féminin</button>
+          </div>
+          <strong id="selected-class-name" class="selected-class-name">Bellaphone</strong>
+          <div class="class-carousel" aria-label="Sélection de classe">
+            <button id="class-prev" class="carousel-arrow" type="button" aria-label="Classe précédente">&#9664;</button>
+            <div class="class-preview">
+              <img id="class-preview-image" alt="" />
+              <small id="class-position">1 / 20</small>
+            </div>
+            <button id="class-next" class="carousel-arrow" type="button" aria-label="Classe suivante">&#9654;</button>
+          </div>
+          <label class="nickname-field" for="character-nickname">
+            <span>Pseudo</span>
+            <input id="character-nickname" type="text" maxlength="20" autocomplete="off" placeholder="Ton pseudo" />
+          </label>
+          <p id="character-feedback" class="character-feedback" role="alert" aria-live="polite"></p>
+          <button id="btn-start-adventure" class="start-btn" type="button" aria-label="Jouer" disabled>
+            <img src="assets/sprites/Classes/Button-JOUER.png" alt="Jouer" />
+          </button>
+        </div>
+      </section>
+      <section id="character-manager" class="character-manager hidden" aria-labelledby="manager-title">
+        <div class="manager-panel">
+          <header class="manager-header">
+            <div>
+              <p class="eyebrow">Gestion du compte</p>
+            <form id="gift-code-form" class="gift-code-form">
+              <label for="gift-code-input">Code cadeau</label>
+              <div class="gift-code-row">
+                <input id="gift-code-input" type="text" maxlength="32" autocomplete="off" placeholder="Entre ton code" />
+                <button type="submit">Valider</button>
+              </div>
+              <small id="gift-code-feedback" class="gift-code-feedback" aria-live="polite"></small>
+            </form>
+              <h2 id="manager-title">Mes personnages</h2>
+            </div>
+            <button id="btn-close-manager" class="manager-close" type="button" aria-label="Fermer">×</button>
+          </header>
+          <div id="character-slots" class="character-slots"></div>
+          <nav class="manager-tabs" aria-label="Gestion du personnage">
+            <button class="manager-tab active" type="button" data-manager-tab="stats">Caractéristiques</button>
+            <button class="manager-tab" type="button" data-manager-tab="equipment">Équipement</button>
+            <button class="manager-tab" type="button" data-manager-tab="inventory">Inventaire</button>
+            <button class="manager-tab" type="button" data-manager-tab="achievements">Succès</button>
+          </nav>
+          <div id="manager-content" class="manager-content"></div>
+        </div>
+      </section>
+      <header class="topbar">
+        <div class="brand">
+          <img class="brand-mark" src="assets/sprites/Logo/Logo.png" alt="Dofus Clicker" />
+          <div>
+            <h1>Dofus Clicker</h1>
+            <p id="region-label">Incarnam</p>
+          </div>
+        </div>
+        <div class="stat-pills">
+          <div class="pill" title="Niveau">
+            <span class="pill-label">Niv.</span>
+            <strong id="stat-level">1</strong>
+          </div>
+          <div class="pill" title="Points de succès">
+            <span class="pill-label">Succès</span>
+            <strong id="stat-achievement-points">0</strong>
+          </div>
+          <div class="pill" title="Kamas">
+            <img src="assets/placeholders/kamas.svg" alt="" />
+            <strong id="stat-kamas">0</strong>
+          </div>
+          <div class="pill" title="Dégâts au clic">
+            <span class="pill-label">Clic</span>
+            <strong id="stat-click">1</strong>
+          </div>
+          <div class="pill" title="Dégâts automatiques / s">
+            <span class="pill-label">Auto</span>
+            <strong id="stat-auto">0</strong>
+          </div>
+          <div class="pill" title="Bonus de puissance du groupe">
+            <span class="pill-label">Groupe</span>
+            <strong id="party-bonus">+0%</strong>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button id="btn-open-manager" class="ghost" type="button">Personnages</button>
+          <button id="btn-reset" class="ghost" type="button">Nouvelle partie</button>
+        </div>
+      </header>
+
+      <div class="xp-track" aria-label="Expérience">
+        <div id="xp-fill" class="xp-fill"></div>
+        <span id="xp-text">0 / 20 PX</span>
+      </div>
+
+      <main class="layout">
+        <aside class="panel inventory-panel">
+          <section class="daily-challenges-panel" aria-labelledby="daily-challenges-title">
+            <div class="daily-challenges-heading">
+              <h2 id="daily-challenges-title">Défis du jour</h2>
+              <span class="daily-reset-label">Chaque jour</span>
+            </div>
+            <div id="daily-challenges"></div>
+          </section>
+          <h2 id="active-equipment-title">Équipement actif</h2>
+          <div id="inventory-content" class="inventory-content"></div>
+        </aside>
+
+        <section class="arena-wrap">
+          <div id="arena" class="arena">
+            <div id="arena-bg" class="arena-bg"></div>
+            <div class="arena-hud">
+              <div>
+                <h2 id="zone-name">Prairie d'Incarnam</h2>
+                <p id="zone-progress" aria-live="polite">0 / 12 monstres</p>
+              </div>
+              <div id="streak-panel" class="streak-panel" aria-live="polite">
+                <span>Série</span>
+                <strong id="streak-count">0</strong>
+                <small id="streak-best">Record : 0</small>
+              </div>
+              <div id="party-hp-list" class="party-hp-list"></div>
+            </div>
+
+            <button id="monster-btn" class="monster-stage" type="button" aria-label="Attaquer">
+              <div id="float-layer" class="float-layer"></div>
+              <div id="monster-sprite" class="sprite-frame"></div>
+              <div class="monster-meta">
+                <strong id="monster-name">Piou Rose</strong>
+                <div class="bar monster-bar"><div id="monster-hp-fill"></div></div>
+                <small id="monster-hp-text">20 / 20</small>
+              </div>
+            </button>
+
+            <p id="click-hint" class="click-hint">Clique le monstre pour l’attaquer</p>
+            <p id="loot-toast" class="loot-toast" aria-live="polite">Aucun butin pour le moment.</p>
+            <p id="death-banner" class="death-banner hidden"></p>
+          </div>
+          <section class="log-panel" aria-labelledby="combat-log-title">
+            <h2 id="combat-log-title">Journal</h2>
+            <ul id="combat-log"></ul>
+          </section>
+        </section>
+
+        <aside class="panel map-panel">
+          <div class="map-panel-header">
+            <h2>Monde</h2>
+            <button id="btn-current-zone" class="current-zone-btn" type="button" title="Afficher la zone en cours" aria-label="Afficher la zone en cours">⌖</button>
+          </div>
+          <p class="hint">Termine la zone, puis son donjon, pour ouvrir la suite.</p>
+          <div id="map-list" class="stack"></div>
+        </aside>
+      </main>
+
+    </div>
+    <script type="module" src="js/main.js?v=45"></script>
+  </body>
+</html>
